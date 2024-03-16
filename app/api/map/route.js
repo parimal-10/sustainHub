@@ -1,17 +1,6 @@
 import { NextResponse } from "next/server"
 
 const data = {
-    "data1": [
-        {
-            "id": "0GJcws44NSPsDHAuxJhK",
-            "latitude": 31.066666,
-            "longitude": 24.333333,
-            "name": "Kushal Bansal",
-            "title": "Street Light Repair",
-            "desc": "the street light is not working since days",
-            "status": "Critical"
-        }
-    ],
     "data": [
         {
             "id": "0GJcws44NSPsDHAuxJhW",
@@ -4750,6 +4739,6 @@ export async function GET (req) {
         console.log("Error sendind map data");
         return NextResponse.json({status: 500})
     } finally {
-        console.log("here");
+        ;
     }
 }

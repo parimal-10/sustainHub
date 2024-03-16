@@ -6,8 +6,7 @@ import "./details.css"
 
 export default function Details() {
     useEffect(() => {
-        mapboxgl.accessToken = 'pk.eyJ1Ijoid29sdmVyNzIwMiIsImEiOiJjbHRoZTF1NWcwM28zMmpzNGozNWpkdXN1In0.aTkWHnxBQzGn1pHR3nImoQ';
-
+        mapboxgl.accessToken = process.env.NEXT_PUBLIC_MP
         const latitude = 20.9517
         const longitude = 85.0985
         const city = "Talcher"

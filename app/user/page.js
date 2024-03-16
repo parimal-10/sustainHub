@@ -1,59 +1,26 @@
 "use client"
 import { useEffect } from "react";
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import axios from "axios";
-import "./admin.css"
+import "./user.css"
 
-// new mapboxgl.Marker() // initialize a new marker
-//     .setLngLat([81.8517, 25.4425]) // Marker [lng, lat] coordinates
-//     .addTo(map);
-
-
-// navigator.geolocation.getCurrentPosition((cor)=> console.log(cor),()=>console.log("Not Found!"))
-// 25.4425 latitude
-// 81.8517 longitude
-
-export default function Admin() {
+export default function Users() {
     useEffect(() => {
-        mapboxgl.accessToken = process.env.NEXT_PUBLIC_MP
+        navigator.geolocation.getCurrentPosition(success, failure);
 
-        async function updateMap() {
-            const map = new mapboxgl.Map({
-                container: 'map',
-                style: 'mapbox://styles/mapbox/streets-v12',
-                center: [77.02, 28.65],
-                zoom: 5
-            });
-
-            const response = await axios.get("/api/map");
-            const rsp = response.data.data;
-            rsp.forEach(element => {
-                const latitude = parseFloat(element.latitude); // Parse latitude as float
-                const longitude = parseFloat(element.longitude); // Parse longitude as float
-
-                new mapboxgl.Marker({ offset: [0, -50 / 2] })
-                    .setLngLat([longitude, latitude]) // Set position with parsed latitude and longitude
-                    .setPopup(
-                        new mapboxgl.Popup({ offset: 25 }) // add popups
-                            .setHTML(
-                                `<p class = "fs-6 fw-bold">${element.country}</p class = "fs-6 fw-1=bolder"><p>${element.name}</p>
-                                <a href = "https://www.google.com">More Details</a>`
-                            )
-                    )
-                    .addTo(map);
-            });
+        function success (position) {
+            console.log(position);
         }
 
-        updateMap();
-    }, []);
-
+        function failure () {
+            console.log("failed to get location");
+        }
+    }, [])
+    
     return (
         <body>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                     <a className="navbar-brand fw-bold fs-4" id="abc" href="#">SustainHub</a>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    <button style={{ border: 'none' }} className="navbar-toggler" type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                         aria-label="Toggle navigation">
                         <svg style={{ color: 'white' }} xmlns="http://www.w3.org/2000/svg" width="27" height="27" fill="currentColor"
@@ -80,11 +47,33 @@ export default function Admin() {
                 </div>
             </nav>
 
-            <p className="pt-3 px-3 fs-4 text-center fw-bold">Welcome back, Kushal!</p>
+            <p className="pt-3 px-3 fs-5 fw-bold">Welcome Back, Kushal!</p>
 
-            <div className="container" style={{ width: '100%', height: '100vh' }}>
-                <p className="mb-0">Click on a marker to see the details:</p>
-                <div id="map" style={{ width: '100%', height: '80%' }}></div>
+            <div className="d-flex align-items-center">
+                <div className="container-sm">
+                    <form action="" method="post" id="form-container">
+                        <h4 className="text-center mb-4">Report a Problem</h4>
+                        <div className="mb-3">
+                            <label htmlFor="category" className="form-label">Select Category:</label>
+                            <div className="dropdown mb-3" id="myDropdown">
+                                <select name="category" id="category" required>
+                                    <option value="1">Garbage Dump</option>
+                                    <option value="2">Street Light Repair</option>
+                                    <option value="3">Something else</option>
+                                </select>
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="desc" className="form-label">Description</label>
+                                <textarea required className="form-control" id="desc"></textarea>
+                            </div>
+                            <div className="mb-3">
+                                <label htmlFor="formFile" className="form-label">Upload a photo:</label>
+                                <input required className="form-control" type="file" id="formFile" accept=".jpg, .jpeg, .png" />
+                            </div>
+                            <button type="submit" id="submit-btn" className="btn btn-outline-success" disabled>Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </body>
     )

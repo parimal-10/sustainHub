@@ -1,5 +1,7 @@
 import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Provider from './ui/Provider'
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata = {
   title: "Create Next App",
@@ -9,7 +11,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <Provider>
+        {children}
+      </Provider>
     </html>
   );
 }

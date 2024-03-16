@@ -1,9 +1,12 @@
 "use client"
 import { useState } from "react"
-import axios from "axios";
+import { useRouter } from "next/navigation"
+import axios from "axios"
 import "./signup.css"
+import { ToastContainer, toast } from "react-toastify"
 
 export default function Signup() {
+    const router = useRouter();
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
@@ -13,13 +16,25 @@ export default function Signup() {
     async function handleSubmit (e) {
         e.preventDefault();
         const userData = {firstName, lastName, email, password }
-        console.log("Submitted data:", { firstName, lastName, email, password, confirmPassword });
-        await axios.post("/api/signup", userData);
+        try {
+            const response = await axios.post("/api/signup", userData);
+            if (response.data === "yes") {
+                router.push("/login");
+            } else {
+                toast.error("Try again!!")
+            }
+        } catch (error) {
+            toast.error("Username already exists, Try again!!")
+            console.error("Signup error", error);
+        }
     };
+
+    const notify = () => toast("Wow")
+    
 
     return (
         <body>
-
+            <ToastContainer />
             <nav className="navbar navbar-expand-   lg bg-body-tertiary">
                 <div className="container-fluid">
                     <a className="navbar-brand fw-bold fs-4" id="abc" href="#">SustainHub</a>
