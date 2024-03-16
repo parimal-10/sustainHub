@@ -1,0 +1,38 @@
+.mapboxgl-popup-content {
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.navbar-items {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+body {
+    background-color: rgb(199, 229, 154);
+
+}
+
+.navbar {
+    padding-top: 0px;
+}
+
+.container-fluid {
+    background-color: rgb(56, 141, 76);
+    color: white;
+}
+
+#abc {
+    color: white;
+
+}
+
+.navbar-toggler-icon {
+    color: white;
+    border: none;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}

@@ -1,0 +1,61 @@
+body {
+  background-color: rgb(199, 229, 154);
+
+}
+
+.container-sm {
+  background-color: white;
+}
+
+.container-fluid {
+  background-color: rgb(56, 141, 76);
+  color: white;
+
+}
+
+.navbar-brand .fw-bold .fs-4 {
+  color: rgb(190, 190, 66);
+}
+
+.pt-3 .px-3 .fs-5 {
+  font-size: 100px;
+}
+
+#abc {
+  color: white;
+
+}
+
+.form-control {
+  background-color: rgb(241, 241, 241);
+
+}
+
+#bcd {
+  color: rgb(6, 3, 3);
+  font-size: 200cap;
+  font-weight: bold;
+}
+
+.navbar {
+  padding-top: 0px;
+}
+
+.container-fluid {
+  background-color: rgb(56, 141, 76);
+  color: white;
+}
+
+#abc {
+  color: white;
+
+}
+
+.navbar-toggler-icon {
+  color: white;
+  border: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
