@@ -7,6 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model issues {
+  id          Int     @id @default(autoincrement())
+  longitude   Decimal @db.Decimal(20, 10)
+  latitude    Decimal @db.Decimal(20, 10)
+  user_id     Int?
+  category    String
+  description String?
+  src         String
+  users       users?  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 model user_details {
   id        Int    @id @default(autoincrement())
   firstname String
@@ -19,5 +30,6 @@ model users {
   email        String        @unique(map: "unique_email")
   password     String
   role         String
+  issues       issues[]
   user_details user_details?
 }

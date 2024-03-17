@@ -1,20 +1,86 @@
 "use client"
-import { useEffect } from "react";
+import { useEffect, useState } from "react"
+import { useSearchParams } from 'next/navigation'
 import "./user.css"
+import axios from "axios"
 
 export default function Users() {
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [image, setImage] = useState(null);
+
+    function onChangehandler(e) {
+        if (e.target.files) {
+            setImage(e.target.files[0])
+        }
+    }
+
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(success, failure);
-
-        function success (position) {
-            console.log(position);
-        }
-
-        function failure () {
-            console.log("failed to get location");
-        }
+        getDetails();
     }, [])
-    
+
+    const searchParams = useSearchParams()
+    const user_id = searchParams.get('id')
+
+    async function getDetails() {
+        try {
+            const response = await axios.post("/api/user", { user_id });
+            setFirstName(response.data.firstname);
+            setLastName(response.data.lastname);
+        } catch (err) {
+            console.log("Error getting details of the user", err.data);
+        }
+    }
+
+    async function getLocation() {
+        return new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(
+                position => resolve(position.coords),
+                error => {
+                    console.log("Failed to get location:", error);
+                    reject(error);
+                }
+            );
+        });
+    }
+
+    async function handleSubmit(e) {
+        e.preventDefault();
+
+        try {
+
+            if (!image) {
+                return
+            }
+
+            const formData = new FormData();
+            formData.append("image", image)
+
+            const response = await axios.post("/api/uploadImage", formData)
+            console.log(response.data.url);
+
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('desc').value;
+
+            await submitIssue(category, description, response.data.url)
+
+        } catch (err) {
+
+        }
+        document.getElementById('form-container').reset();
+    }
+
+    async function submitIssue(category, description, src) {
+        const location = await getLocation();
+        const { longitude, latitude } = location
+
+        try {
+            const response = await axios.post("/api/newIssue", { user_id, category, description, longitude, latitude, src })
+        } catch (err) {
+            console.log("Error submitting new Issue", err);
+        }
+    }
+
     return (
         <body>
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -47,11 +113,11 @@ export default function Users() {
                 </div>
             </nav>
 
-            <p className="pt-3 px-3 fs-5 fw-bold">Welcome Back, Kushal!</p>
+            <p className="pt-3 px-3 fs-5 fw-bold">Welcome Back, {firstName} {lastName}!</p>
 
             <div className="d-flex align-items-center">
                 <div className="container-sm">
-                    <form action="" method="post" id="form-container">
+                    <form id="form-container" onSubmit={handleSubmit}>
                         <h4 className="text-center mb-4">Report a Problem</h4>
                         <div className="mb-3">
                             <label htmlFor="category" className="form-label">Select Category:</label>
@@ -68,9 +134,9 @@ export default function Users() {
                             </div>
                             <div className="mb-3">
                                 <label htmlFor="formFile" className="form-label">Upload a photo:</label>
-                                <input required className="form-control" type="file" id="formFile" accept=".jpg, .jpeg, .png" />
+                                <input onChange={onChangehandler} required className="form-control" type="file" id="formFile" accept=".jpg, .jpeg, .png" />
                             </div>
-                            <button type="submit" id="submit-btn" className="btn btn-outline-success" disabled>Submit</button>
+                            <button type="submit" id="submit-btn" className="btn btn-outline-success">Submit</button>
                         </div>
                     </form>
                 </div>

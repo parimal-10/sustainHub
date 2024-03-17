@@ -5,15 +5,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import axios from "axios";
 import "./admin.css"
 
-// new mapboxgl.Marker() // initialize a new marker
-//     .setLngLat([81.8517, 25.4425]) // Marker [lng, lat] coordinates
-//     .addTo(map);
-
-
-// navigator.geolocation.getCurrentPosition((cor)=> console.log(cor),()=>console.log("Not Found!"))
-// 25.4425 latitude
-// 81.8517 longitude
-
 export default function Admin() {
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MP
