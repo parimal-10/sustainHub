@@ -9,15 +9,16 @@ export async function middleware(request) {
     switch (token.role) {
         case "ADMIN":
             if (!request.nextUrl.pathname.startsWith("/admin") &&
-                !request.nextUrl.pathname.startsWith("/details")
+                !request.nextUrl.pathname.startsWith("/details") && 
+                !request.nextUrl.pathname === "/"
             ) {
                 return NextResponse.redirect(new URL(`/admin?id=${token.id}`, request.url));
             }
             break;
         case "USER":
             if (
-                !request.nextUrl.pathname.startsWith("/details") &&
-                !request.nextUrl.pathname.startsWith("/user")
+                !request.nextUrl.pathname.startsWith("/user") && 
+                !request.nextUrl.pathname === "/"
             ) {
                 return NextResponse.redirect(new URL(`/user?id=${token.id}`, request.url));
             }
@@ -29,7 +30,6 @@ export async function middleware(request) {
 
 export const config = {
     matcher: [
-        // Match all routes except the ones that start with /login and api and the static folder
-        "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+        "/((?!api|_next/static|_next/image|favicon.ico|login|^/$).*)",
     ],
 };

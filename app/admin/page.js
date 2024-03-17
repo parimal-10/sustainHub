@@ -1,8 +1,8 @@
 "use client"
-import { useEffect } from "react";
-import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
-import 'mapbox-gl/dist/mapbox-gl.css';
-import axios from "axios";
+import { useEffect } from "react"
+import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
+import 'mapbox-gl/dist/mapbox-gl.css'
+import axios from "axios"
 import "./admin.css"
 
 export default function Admin() {
@@ -17,19 +17,18 @@ export default function Admin() {
                 zoom: 5
             });
 
-            const response = await axios.get("/api/map");
-            const rsp = response.data.data;
+            const response = await axios.get("/api/adminMap");
+            const rsp = response.data;
             rsp.forEach(element => {
-                const latitude = parseFloat(element.latitude); // Parse latitude as float
-                const longitude = parseFloat(element.longitude); // Parse longitude as float
+                const latitude = parseFloat(element.latitude); 
+                const longitude = parseFloat(element.longitude); 
 
                 new mapboxgl.Marker({ offset: [0, -50 / 2] })
-                    .setLngLat([longitude, latitude]) // Set position with parsed latitude and longitude
+                    .setLngLat([longitude, latitude]) 
                     .setPopup(
-                        new mapboxgl.Popup({ offset: 25 }) // add popups
+                        new mapboxgl.Popup({ offset: 25 })
                             .setHTML(
-                                `<p class = "fs-6 fw-bold">${element.country}</p class = "fs-6 fw-1=bolder"><p>${element.name}</p>
-                                <a href = "https://www.google.com">More Details</a>`
+                                `<a href = "/details?id=${element.id}">More Details</a>`
                             )
                     )
                     .addTo(map);
