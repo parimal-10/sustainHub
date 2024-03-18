@@ -9,16 +9,14 @@ export async function middleware(request) {
     switch (token.role) {
         case "ADMIN":
             if (!request.nextUrl.pathname.startsWith("/admin") &&
-                !request.nextUrl.pathname.startsWith("/details") && 
-                !request.nextUrl.pathname === "/"
+                !request.nextUrl.pathname.startsWith("/details")
             ) {
                 return NextResponse.redirect(new URL(`/admin?id=${token.id}`, request.url));
             }
             break;
         case "USER":
             if (
-                !request.nextUrl.pathname.startsWith("/user") && 
-                !request.nextUrl.pathname === "/"
+                !request.nextUrl.pathname.startsWith("/user")
             ) {
                 return NextResponse.redirect(new URL(`/user?id=${token.id}`, request.url));
             }
@@ -30,6 +28,6 @@ export async function middleware(request) {
 
 export const config = {
     matcher: [
-        "/((?!api|_next/static|_next/image|favicon.ico|login|^/$).*)",
+        "/((?!api|_next/static|_next/image|favicon.ico|login|/).*)",
     ],
 };

@@ -1,13 +1,31 @@
 "use client"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
+import { useSearchParams } from "next/navigation"
 import 'mapbox-gl/dist/mapbox-gl.css'
 import axios from "axios"
 import "./admin.css"
 
 export default function Admin() {
+    const searchParams = useSearchParams();
+    const user_id = searchParams.get("id");
+
+    const [name, setName] = useState("");
+    async function getAdminDetails() {
+        try {
+
+            const response = await axios.post("/api/user", { user_id })
+            const data = response.data
+            setName(data.firstname + " " + data.lastname)
+
+        } catch (err) {
+
+        }
+    }
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MP
+
+        getAdminDetails()
 
         async function updateMap() {
             const map = new mapboxgl.Map({
@@ -70,7 +88,7 @@ export default function Admin() {
                 </div>
             </nav>
 
-            <p className="pt-3 px-3 fs-4 text-center fw-bold">Welcome back, Kushal!</p>
+            <p className="pt-3 px-3 fs-4 text-center fw-bold">Welcome back, { name }</p>
 
             <div className="container" style={{ width: '100%', height: '100vh' }}>
                 <p className="mb-0">Click on a marker to see the details:</p>

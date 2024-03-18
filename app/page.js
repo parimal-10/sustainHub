@@ -55,7 +55,7 @@ export default function Home() {
           <div class="text-box">
             <p class="tagline">Spot it. Report it. Sustain it.</p>
             <p>Join the Sustain Hub movement today!</p>
-            <a href="3">learn More</a>
+            <a href="/login">learn More</a>
           </div>
         </div>
       </section>
