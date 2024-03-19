@@ -24,6 +24,7 @@ model user_details {
   lastname  String
   address   String?
   phone     Decimal? @db.Decimal(10, 0)
+  rewards   Int?     @default(0)
   users     users    @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
