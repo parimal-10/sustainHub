@@ -1,15 +1,21 @@
 "use client"
 import { useEffect, useState } from 'react'
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
-import { useSearchParams } from 'next/navigation'
+import { redirect, useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import "./details.css"
+import { useRouter } from 'next/navigation'
 
 export default function Details() {
 
+    const router = useRouter();
+
     const searchParams = useSearchParams()
-    const issue_id = searchParams.get('id')
+    const issue_id = searchParams.get("id")
+
+    const user_id = searchParams.get("user_id")
+
     const [title, setTitle] = useState("")
     const [description, setDescription] = useState("")
     const [longitude, setLongitude] = useState(0)
@@ -30,7 +36,7 @@ export default function Details() {
             setName(data.users.user_details.firstname + " " + data.users.user_details.lastname)
             setEmail(data.users.email)
             setSrc(data.src)
-            
+
         } catch (err) {
             console.log("Error getting issue details in frontend", err.message);
         }
@@ -49,7 +55,6 @@ export default function Details() {
             center: [longitude, latitude],
             zoom: 10
         });
-
 
         new mapboxgl.Marker()
             .setLngLat([longitude, latitude])
@@ -80,15 +85,7 @@ export default function Details() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
                             <li className="nav-item px-2">
-                                <a className="nav-link active" aria-current="page" id="abc" href="#">Home</a>
-                            </li>
-                            <li className="nav-item p-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    className="bi bi-person-circle" viewBox="0 0 16 16">
-                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                                    <path fillRule="evenodd"
-                                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                                </svg>
+                                <a className="nav-link active" aria-current="page" id="abc" href={`/admin?id=${user_id}`}>Home</a>
                             </li>
                         </ul>
                     </div>
@@ -115,8 +112,8 @@ export default function Details() {
                         <div id="map" style={{ width: '100%', height: '400px' }}></div>
 
                         <h6>Photos:</h6>
-                        <div class="photos">
-                            <img class="photo" src={src} />
+                        <div class="photos" onClick={() => redirect(src)}>
+                            <img class="photo" src={src}/>
                         </div>
 
                         <div className="mb-3 form-check mt-3">

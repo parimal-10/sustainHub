@@ -29,3 +29,17 @@ body {
 .navbar-toggler:focus {
     box-shadow: none;
 }
+
+.photos{
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: start;
+}
+.photo{
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+    border: 2px solid rgb(56, 141, 76);
+}

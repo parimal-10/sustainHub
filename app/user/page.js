@@ -3,6 +3,8 @@ import { useEffect, useState } from "react"
 import { useSearchParams } from 'next/navigation'
 import "./user.css"
 import axios from "axios"
+import { signOut } from "next-auth/react"
+import { ToastContainer, toast } from "react-toastify"
 
 export default function Users() {
     const [firstName, setFirstName] = useState("");
@@ -53,36 +55,41 @@ export default function Users() {
                 return
             }
 
+            const location = await getLocation();
+            const { longitude, latitude } = location
+
+            toast("loading", {
+                autoClose: false,
+                closeOnClick: false
+            })
+
             const formData = new FormData();
             formData.append("image", image)
 
             const response = await axios.post("/api/uploadImage", formData)
-            console.log(response.data.url);
+            const src = response.data.url
 
             const category = document.getElementById('category').value;
             const description = document.getElementById('desc').value;
 
-            await submitIssue(category, description, response.data.url)
+            try {
+
+                await axios.post("/api/newIssue", { user_id, category, description, longitude, latitude, src })
+
+            } catch (err) {
+                console.log("Error submitting new Issue", err);
+            }
 
         } catch (err) {
-
+            console.log("Error", err);
         }
+        toast.dismiss();
         document.getElementById('form-container').reset();
-    }
-
-    async function submitIssue(category, description, src) {
-        const location = await getLocation();
-        const { longitude, latitude } = location
-
-        try {
-            const response = await axios.post("/api/newIssue", { user_id, category, description, longitude, latitude, src })
-        } catch (err) {
-            console.log("Error submitting new Issue", err);
-        }
     }
 
     return (
         <body>
+            <ToastContainer />
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
                 <div className="container-fluid">
                     <a className="navbar-brand fw-bold fs-4" id="abc" href="#">SustainHub</a>
@@ -97,16 +104,21 @@ export default function Users() {
                     </button>
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li className="nav-item px-2">
-                                <a className="nav-link active" aria-current="page" id="abc" href="#">Home</a>
+                            <li>
+                                <button className="nav-link active" aria-current="page" id="abc" onClick={e => {
+                                    e.preventDefault()
+                                    signOut()
+                                }}>Signout</button>
                             </li>
                             <li className="nav-item p-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                                    className="bi bi-person-circle" viewBox="0 0 16 16">
-                                    <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
-                                    <path fillRule="evenodd"
-                                        d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
-                                </svg>
+                                <a href={`/profile?id=${user_id}`} style={{textDecoration: "none"}}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        className="bi bi-person-circle" viewBox="0 0 16 16">
+                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+                                        <path fillRule="evenodd"
+                                            d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+                                    </svg>
+                                </a>
                             </li>
                         </ul>
                     </div>

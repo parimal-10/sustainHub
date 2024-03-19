@@ -19,10 +19,12 @@ model issues {
 }
 
 model user_details {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   firstname String
   lastname  String
-  users     users  @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  address   String?
+  phone     Decimal? @db.Decimal(10, 0)
+  users     users    @relation(fields: [id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model users {
