@@ -1,5 +1,5 @@
     "use client"
-    import { useEffect, useState } from 'react'
+    import { useEffect, useState, Suspense } from 'react'
     import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
     import { redirect, useSearchParams } from 'next/navigation'
     import axios from 'axios'
@@ -78,6 +78,7 @@
         }
 
         return (
+            <Suspense>
             <body>
                 <nav className="navbar navbar-expand-lg bg-body-tertiary">
                     <div className="container-fluid">
@@ -134,5 +135,6 @@
                     </div>
                 </div>
             </body>
+                            </Suspense>
         )
     }
