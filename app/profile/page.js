@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Suspense } from 'react'
 import "./profile.css"
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
@@ -48,6 +48,7 @@ export default function ProfilePage() {
     };
 
     return (
+        <Suspense>
         <body>
             {details ? (
                 <>
@@ -208,5 +209,6 @@ export default function ProfilePage() {
                 <h1>Loading</h1>
             )}
         </body>
+                </Suspense>
     );
 }
