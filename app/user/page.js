@@ -1,6 +1,6 @@
 "use client"
-import { useEffect, useState, Suspense } from "react"
-import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from "react"
+import { useRouter } from 'next/navigation'
 import "./user.css"
 import axios from "axios"
 import { signOut } from "next-auth/react"
@@ -21,8 +21,10 @@ export default function Users() {
         getDetails();
     }, [])
 
-    const searchParams = useSearchParams()
-    const user_id = searchParams.get('id')
+    const router = useRouter();
+    const { id } = router.query;
+
+    user_id = id;
 
     async function getDetails() {
         try {
@@ -88,7 +90,6 @@ export default function Users() {
     }
 
     return (
-        <Suspense>
         <body>
             <ToastContainer />
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -155,6 +156,5 @@ export default function Users() {
                 </div>
             </div>
         </body>
-                                                </Suspense>
     )
 }
