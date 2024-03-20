@@ -1,12 +1,15 @@
 "use client"
-import React, { useEffect, useState, Suspense } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./profile.css"
-import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
 export default function ProfilePage() {
-    const searchParams = useSearchParams();
-    const user_id = searchParams.get("id")
+
+    const router = useRouter();
+    const { id } = router.query;
+
+    const user_id = id;
 
     const [details, setDetails] = useState(null)
 
@@ -48,7 +51,6 @@ export default function ProfilePage() {
     };
 
     return (
-        <Suspense>
         <body>
             {details ? (
                 <>
@@ -209,6 +211,5 @@ export default function ProfilePage() {
                 <h1>Loading</h1>
             )}
         </body>
-                </Suspense>
     );
 }
