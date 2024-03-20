@@ -11,6 +11,8 @@
         const router = useRouter();
         const { id, user_id } = router.query;
 
+        const issue_id = id;
+
         const [title, setTitle] = useState("")
         const [description, setDescription] = useState("")
         const [longitude, setLongitude] = useState(0)
