@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from 'next/navigation'
 import "./user.css"
 import axios from "axios"
@@ -88,6 +88,7 @@ export default function Users() {
     }
 
     return (
+        <Suspense>
         <body>
             <ToastContainer />
             <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -154,5 +155,6 @@ export default function Users() {
                 </div>
             </div>
         </body>
+                                                </Suspense>
     )
 }
