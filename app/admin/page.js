@@ -1,15 +1,18 @@
 "use client"
 import { useEffect, useState } from "react"
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
-import { useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import 'mapbox-gl/dist/mapbox-gl.css'
 import axios from "axios"
 import "./admin.css"
 import { signOut } from "next-auth/react"
 
 export default function Admin() {
-    const searchParams = useSearchParams();
-    const user_id = searchParams.get("id");
+    
+    const router = useRouter();
+    const { id } = router.query;
+
+    const user_id = id;
 
     const [name, setName] = useState("");
     async function getAdminDetails() {
