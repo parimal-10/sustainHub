@@ -1,17 +1,15 @@
     "use client"
-    import { useEffect, useState, Suspense } from 'react'
+    import { useEffect, useState } from 'react'
     import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
-    import { redirect, useSearchParams } from 'next/navigation'
+    import { redirect, useRouter } from 'next/navigation'
     import axios from 'axios'
     import 'mapbox-gl/dist/mapbox-gl.css'
     import "./details.css"
 
     export default function Details() {
 
-        const searchParams = useSearchParams()
-        const issue_id = searchParams.get("id")
-
-        const user_id = searchParams.get("user_id")
+        const router = useRouter();
+        const { id, user_id } = router.query;
 
         const [title, setTitle] = useState("")
         const [description, setDescription] = useState("")
@@ -78,7 +76,6 @@
         }
 
         return (
-            <Suspense>
             <body>
                 <nav className="navbar navbar-expand-lg bg-body-tertiary">
                     <div className="container-fluid">
@@ -135,6 +132,5 @@
                     </div>
                 </div>
             </body>
-                            </Suspense>
         )
     }
